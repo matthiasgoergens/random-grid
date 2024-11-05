@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random 5x5 Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #333;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <table id="grid"></table>
+
+    <script>
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createGrid() {
+            const numbers = Array.from({ length: 25 }, (_, i) => i + 1);
+            const shuffledNumbers = shuffle(numbers);
+            const grid = document.getElementById('grid');
+
+            let index = 0;
+            for (let i = 0; i < 5; i++) {
+                const row = document.createElement('tr');
+                for (let j = 0; j < 5; j++) {
+                    const cell = document.createElement('td');
+                    cell.textContent = shuffledNumbers[index++];
+                    row.appendChild(cell);
+                }
+                grid.appendChild(row);
+            }
+        }
+
+        createGrid();
+    </script>
+</body>
+</html>
