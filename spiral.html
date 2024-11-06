@@ -48,7 +48,7 @@
 
             let radius = 0;
             let angle = 0;
-            let accumulatedDistance = 0;
+            let accumulatedDistance = targetDistance * 2;
             let lastX = centerX;
             let lastY = centerY;
             let pointIndex = 0;
@@ -81,7 +81,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('spiral-container');
-            const digits = generateRandomDigits(100);
+            const digits = generateRandomDigits(102);
             placeDigitsInSpiral(container, digits);
         });
 
