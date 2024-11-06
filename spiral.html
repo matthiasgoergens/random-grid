@@ -16,8 +16,8 @@
         }
         #spiral-container {
             position: relative;
-            width: 80vw;
-            height: 80vh;
+            width: 100vw;
+            height: 100vh;
         }
         .digit {
             position: absolute;
@@ -41,7 +41,7 @@
         function placeDigitsInSpiral(container, digits) {
             const centerX = container.offsetWidth / 2;
             const centerY = container.offsetHeight / 2;
-            const stepRadius = 20;  // Controls how tightly the spiral is wound
+            const stepRadius = 15;  // Controls how tightly the spiral is wound
             const totalPoints = digits.length;
             const deltaTheta = 0.0001;
             const targetDistance = 80; // Target distance between digits
@@ -55,8 +55,8 @@
 
             while (pointIndex < totalPoints) {
                 radius = stepRadius * angle;
-                const x = centerX + radius * Math.cos(angle);
-                const y = centerY + radius * Math.sin(angle);
+                const x = centerX + radius * Math.cos(angle) * (container.offsetWidth / 800);
+                const y = centerY + radius * Math.sin(angle) * (container.offsetHeight / 800);
 
                 const distance = Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2));
                 accumulatedDistance -= distance;
@@ -81,6 +81,13 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('spiral-container');
+            const digits = generateRandomDigits(100);
+            placeDigitsInSpiral(container, digits);
+        });
+
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('spiral-container');
+            container.innerHTML = '';
             const digits = generateRandomDigits(100);
             placeDigitsInSpiral(container, digits);
         });
