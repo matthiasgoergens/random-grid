@@ -41,14 +41,13 @@
         function placeDigitsInSpiral(container, digits) {
             const centerX = container.offsetWidth / 2;
             const centerY = container.offsetHeight / 2;
-            const initialStepAngle = 0.2; // Base radians per step
             const stepRadius = 12;  // Pixels per step
 
             let angle = 0;
             let radius = 0;
 
             digits.forEach((digit, index) => {
-                const scaledStepAngle = initialStepAngle * (1 + radius / 50); // Scale the angle based on radius
+                const scaledStepAngle = 0.5 / (1 + radius / 50); // Scale angle inversely with radius
                 const x = centerX + radius * Math.cos(angle);
                 const y = centerY + radius * Math.sin(angle);
 
