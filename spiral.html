@@ -38,32 +38,52 @@
             return digits;
         }
 
+        function calculateArcLength(a, b, theta) {
+            return Math.sqrt(Math.pow(a + b * theta, 2) + Math.pow(b, 2));
+        }
+
         function placeDigitsInSpiral(container, digits) {
             const centerX = container.offsetWidth / 2;
             const centerY = container.offsetHeight / 2;
-            const stepRadius = 12;  // Pixels per step
+            const stepRadius = 8;  // Pixels per step
+            const totalPoints = digits.length;
+            const a = 0;
+            const b = stepRadius / (2 * Math.PI); // Controls spacing
 
-            let angle = 0;
+            // Calculate cumulative arc lengths to determine even spacing
+            let arcLengths = [0];
+            let totalArcLength = 0;
+            const deltaTheta = 0.01;
+
+            for (let theta = 0; arcLengths.length <= totalPoints; theta += deltaTheta) {
+                totalArcLength += calculateArcLength(a, b, theta) * deltaTheta;
+                arcLengths.push(totalArcLength);
+            }
+
+            const targetArcLength = totalArcLength / totalPoints;
+            let currentArcLength = 0;
             let radius = 0;
+            let angle = 0;
+            let pointIndex = 0;
 
-            digits.forEach((digit, index) => {
-                const scaledStepAngle = 0.5 / (1 + radius / 50); // Scale angle inversely with radius
-                const x = centerX + radius * Math.cos(angle);
-                const y = centerY + radius * Math.sin(angle);
+            while (pointIndex < totalPoints) {
+                currentArcLength += calculateArcLength(a, b, angle) * deltaTheta;
+                if (currentArcLength >= targetArcLength * (pointIndex + 1)) {
+                    radius = a + b * angle;
+                    const x = centerX + radius * Math.cos(angle);
+                    const y = centerY + radius * Math.sin(angle);
 
-                if (x >= 0 && x <= container.offsetWidth && y >= 0 && y <= container.offsetHeight) {
                     const digitElement = document.createElement('div');
                     digitElement.className = 'digit';
-                    digitElement.textContent = digit;
+                    digitElement.textContent = digits[pointIndex];
                     digitElement.style.left = `${x}px`;
                     digitElement.style.top = `${y}px`;
 
                     container.appendChild(digitElement);
+                    pointIndex++;
                 }
-
-                angle += scaledStepAngle;
-                radius += stepRadius;
-            });
+                angle += deltaTheta;
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
