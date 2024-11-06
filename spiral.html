@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Digits Spiral</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        #spiral-container {
+            position: relative;
+            width: 80vw;
+            height: 80vh;
+        }
+        .digit {
+            position: absolute;
+            font-size: 3rem;
+            color: #333;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div id="spiral-container"></div>
+    <script>
+        function generateRandomDigits(count) {
+            const digits = [];
+            for (let i = 0; i < count; i++) {
+                digits.push(Math.floor(Math.random() * 10));
+            }
+            return digits;
+        }
+
+        function placeDigitsInSpiral(container, digits) {
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
+            const initialStepAngle = 0.2; // Base radians per step
+            const stepRadius = 12;  // Pixels per step
+
+            let angle = 0;
+            let radius = 0;
+
+            digits.forEach((digit, index) => {
+                const scaledStepAngle = initialStepAngle * (1 + radius / 50); // Scale the angle based on radius
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+
+                if (x >= 0 && x <= container.offsetWidth && y >= 0 && y <= container.offsetHeight) {
+                    const digitElement = document.createElement('div');
+                    digitElement.className = 'digit';
+                    digitElement.textContent = digit;
+                    digitElement.style.left = `${x}px`;
+                    digitElement.style.top = `${y}px`;
+
+                    container.appendChild(digitElement);
+                }
+
+                angle += scaledStepAngle;
+                radius += stepRadius;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('spiral-container');
+            const digits = generateRandomDigits(100);
+            placeDigitsInSpiral(container, digits);
+        });
+    </script>
+</body>
+</html>
